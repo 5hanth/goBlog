@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shanthakumar</title>
+    <link>http://shanth.xyz/tags/culture/index.xml</link>
+    <description>Recent content on Shanthakumar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://shanth.xyz/tags/culture/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Do Care to format mails sent to lists</title>
+      <link>http://shanth.xyz/post/format_mails_sent_to_lists/</link>
+      <pubDate>Sun, 21 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://shanth.xyz/post/format_mails_sent_to_lists/</guid>
+      <description>
+
+&lt;h1 id=&#34;how-long-it-gonna-take-for-you-to-format-your-mails&#34;&gt;How long it gonna take for you to format your mails??&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://shanth.xyz/files/format_mails_sent_to_lists.gif&#34; alt=&#34;format mails&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Don&amp;rsquo;t
+
+&lt;ul&gt;
+&lt;li&gt;Top-posting&lt;/li&gt;
+&lt;li&gt;Bottom-posting&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Do&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Interleaved-posting&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Always having the right tools around you will never let you do the
+wrong thing.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;You can check &lt;a href=&#34;./prelude-emacs.html#orgheadline18&#34;&gt;my .emacs config&lt;/a&gt; for such fancy automatic formatting
+when interleaved posting.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script src=&#34;https://gist.github.com/5hanth/ba984fe09107f08c34ab.js&#34;&gt;&lt;/script&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Survived A Day Without Internet</title>
+      <link>http://shanth.xyz/post/survived-a-day-without-internet/</link>
+      <pubDate>Sun, 19 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://shanth.xyz/post/survived-a-day-without-internet/</guid>
+      <description>&lt;p&gt;It’s very pleasing rainy weather here. However internet connection is
+down which is not appealing for me. It’s time to scream at my &lt;a href=&#34;http://www.bsnl.co.in/&#34;&gt;ISP&lt;/a&gt; :)&lt;/p&gt;
+
+&lt;p&gt;How terrible it is without internet ? Still I managed to get going. If
+I had had the internet, I would simply be roaming somewhere in
+there. As of now all I need is Haskell documentation. Never mind; I
+’ve downloaded an &lt;a href=&#34;http://www.haskell.org/ghc/docs/latest/&#34;&gt;off-line&lt;/a&gt; copy a couple of days back which now I find
+it very handy.&lt;/p&gt;
+
+&lt;p&gt;I use my mobile to read whenever I don’t need a compiler to play with.
+Also right now, I’m just going through The Haskell Library. The source
+code of modules itself is a great resource that I got along with
+haddock generated documentation.&lt;/p&gt;
+
+&lt;p&gt;Chrome doesn’t allow direct file access to SD card. Anyway I have got
+a &lt;a href=&#34;https://play.google.com/store/apps/details?id=org.xeustechnologies.android.kws&amp;amp;hl=en&#34;&gt;server&lt;/a&gt; application installed in my mobile. I just ran a local HTTP
+Server.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://shanth.xyz/files/mserv.png&#34; alt=&#34;serv&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://shanth.xyz/files/mcli.png&#34; alt=&#34;cli&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;That’s Awesome ! Felt good that there is no distraction. Anyway I
+would go crazy if this continues. No matter whether I watch cats or do
+something productive, I want my effin&amp;rsquo; internet connection back!
+Period.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://shanth.xyz/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://shanth.xyz/about/</guid>
+      <description>&lt;pre&gt;&lt;code class=&#34;language-clojure&#34;&gt;(def shanthakumar {:cyber-name &amp;quot;5hanth&amp;quot;
+                   :blogs-at   &amp;quot;shanth.xyz&amp;quot;
+
+                   :speaks     {:to-human   [&amp;quot;தமிழ்&amp;quot;
+                                             &amp;quot;English&amp;quot;]
+                                :to-machine [&amp;quot;(lisp)&amp;quot;
+                                             &amp;quot;λaskell&amp;quot;]}
+                   :MBTI-type  &amp;quot;INTJ&amp;quot;
+
+                   :keyboard   &amp;quot;dvorak&amp;quot;
+                   :editor     [&amp;quot;emacs&amp;quot;,&amp;quot;atom&amp;quot;]
+
+                   :pgp        {:pub-key     &amp;quot;0x88EE1A77&amp;quot;
+                                :fingerprint &amp;quot;DE53 0326 5015 7A0B 7257 9D72 E3AD 5EAD 88EE 1A77&amp;quot;}
+
+                   :likes      {:movies [&amp;quot;Back To The Future&amp;quot;
+                                         &amp;quot;The Matrix&amp;quot;
+                                         &amp;quot;Source Code&amp;quot;
+                                         &amp;quot;The Medallion&amp;quot;
+                                         &amp;quot;Revolution OS&amp;quot;
+                                         &amp;quot;Lucy&amp;quot;
+                                         &amp;quot;Inception&amp;quot;
+                                         &amp;quot;Sky High&amp;quot;
+                                         &amp;quot;The Island&amp;quot;
+                                         &amp;quot;X-Men&amp;quot;]
+
+                                :music  [&amp;quot;Goo Goo Dolls&amp;quot;
+                                         &amp;quot;Supertramp&amp;quot;
+                                         &amp;quot;Coldplay&amp;quot;
+                                         &amp;quot;Miley Cyrus&amp;quot;
+                                         &amp;quot;Bad Religion&amp;quot;]
+
+                                :fictional-chars [&amp;quot;Light Yagami&amp;quot;
+                                                  &amp;quot;Benjamin Kirby Tennyson&amp;quot;
+                                                  &amp;quot;Jacob Luke Long&amp;quot;]
+
+                                :fruits [&amp;quot;Punica granatum&amp;quot;
+                                         &amp;quot;Artocarpus heterophyllus&amp;quot;
+                                         &amp;quot;Citrullus lanatus&amp;quot;
+                                         &amp;quot;Citrus × sinensis&amp;quot;]
+
+                                :flowers [&amp;quot;Jasminum officinale&amp;quot;
+                                          &amp;quot;Barleria cristata&amp;quot;
+                                          &amp;quot;Lilium candidum&amp;quot;]
+
+                                :colors [&amp;quot;#FFFFFF&amp;quot;
+                                         &amp;quot;#000000&amp;quot;]
+
+                                :games  [&amp;quot;Chess&amp;quot;
+                                         &amp;quot;Rubik Cube&amp;quot;
+                                         &amp;quot;Reversi&amp;quot;
+                                         &amp;quot;Mario&amp;quot;
+                                         &amp;quot;Tetris&amp;quot;]}
+
+                   :relationship-status &amp;quot;it&#39;s complicated with my laptop&amp;quot;
+
+                   :food       &amp;quot;veganism&amp;quot;
+                   :religion   &amp;quot;apatheism&amp;quot;
+                   :political  &amp;quot;anarchism&amp;quot;
+                   :philosophy &amp;quot;epicureanism&amp;quot;
+
+                   :caste      &amp;quot;mammalia&amp;quot;
+                   :gender     &amp;quot;cis-♂&amp;quot;
+
+                   :blood-grp  &amp;quot;A+&amp;quot;
+                   :born-in    &amp;quot;mid 1990s&amp;quot;
+                   :lives-at   &amp;quot;127.0.0.1@Chennai&amp;quot;})                
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1315 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shanthakumar</title>
+    <link>http://shanth.xyz/tags/emacs/index.xml</link>
+    <description>Recent content on Shanthakumar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://shanth.xyz/tags/emacs/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Prelude Emacs</title>
+      <link>http://shanth.xyz/post/prelude-emacs/</link>
+      <pubDate>Sat, 05 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://shanth.xyz/post/prelude-emacs/</guid>
+      <description>
+
+&lt;h1 id=&#34;echo-emacs-daemon-xstartup&#34;&gt;echo &amp;ldquo;emacs &amp;ndash;daemon&amp;rdquo; &amp;gt;&amp;gt; ~/.xstartup&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;figlet &amp;quot;Emacs + Org-mode = Awesome&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;reference-card-emacs-101&#34;&gt;Reference Card: Emacs 101&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I always start by #learning how to learn#.&lt;/li&gt;
+&lt;li&gt;I always had souls around me who respectfully insisted #&lt;a href=&#34;https://en.wikipedia.org/wiki/RTFM&#34;&gt;RTFM&lt;/a&gt;#!!!&lt;/li&gt;
+&lt;li&gt;Emacs got a nice way for this. =C-h k &lt;key&gt;= will pop a
+documentation of corresponding key.&lt;/li&gt;
+&lt;li&gt;To know about =C-n=, I would simply do a =C-h k C-n=.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;motion&#34;&gt;Motion&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-pre&#34;&gt;| entity to move over                     | backward | forward |
+|-----------------------------------------+----------+---------|
+| character                               | C-b      | C-f     |
+| word                                    | M-b      | M-f     |
+| line                                    | C-p      | C-n     |
+| go to line beginning (or end)           | C-a      | C-e     |
+| sexp                                    | C-M-b    | C-M-f   |
+| go to buffer beginning (or end)         | M-&amp;lt;      | M-&amp;gt;     |
+| scroll to next screen                   | C-v      |         |
+| scroll to previous screen               | M-v      |         |
+| scroll left                             | C-x &amp;lt;    |         |
+| scroll right                            | C-x &amp;gt;    |         |
+| scroll current line to center of screen | C-u C-l  |         |
+|-----------------------------------------+----------+---------|
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;misc&#34;&gt;Misc&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-pre&#34;&gt;| Shortcut     | Description                                |
+|--------------+--------------------------------------------|
+| C-w          | Cut                                        |
+| M-w          | Copy                                       |
+| C-y          | Paste                                      |
+| C-x 1        | would kill all windows but the active one. |
+| M-!          | execute a shell command                    |
+| M-:          | eval emacs-lisp                            |
+| C-u 70 C-x f | sets column width to 70                    |
+|--------------+--------------------------------------------|
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;ctrl-capslock&#34;&gt;ctrl &amp;lt;-&amp;gt; capslock&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Had seen many using their palm edge to hit ctrl which might sound
+easy with an external keyboard but definitely not with the one that
+comes built-in with laptop.&lt;/li&gt;
+&lt;li&gt;So I choose to swap left ctrl key with capslock for ergonomic
+reasons.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;    # .xinitrc
+    setxkbmap -option ctrl:swapcaps
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;add-package-repositories&#34;&gt;Add package repositories&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;;; -#- lexical-binding: t; mode: emacs-lisp -#-
+(require &#39;package)
+(custom-set-variables
+ &#39;(package-archives
+   (quote
+    ((&amp;quot;org&amp;quot; . &amp;quot;http://orgmode.org/elpa/&amp;quot;)
+     (&amp;quot;melpa&amp;quot; . &amp;quot;http://melpa.milkbox.net/packages/&amp;quot;)
+     (&amp;quot;melpa-stable&amp;quot; . &amp;quot;http://stable.melpa.org/packages/&amp;quot;)
+     (&amp;quot;marmalade&amp;quot; . &amp;quot;http://marmalade-repo.org/packages/&amp;quot;)
+     (&amp;quot;gnu&amp;quot; . &amp;quot;http://elpa.gnu.org/packages/&amp;quot;)))))
+
+(package-initialize)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;use-use-package&#34;&gt;Use use-package&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;;; Bootstrap `use-package&#39;
+(unless (package-installed-p &#39;use-package)
+  (package-refresh-contents)
+  (package-install &#39;use-package))
+
+(eval-when-compile
+  (require &#39;use-package))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;theme&#34;&gt;Theme&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;;; start your day with todo.org
+;  (setq initial-buffer-choice &amp;quot;~/org/non-public/org/todo.org&amp;quot;)
+(setq inhibit-startup-screen t)
+
+  ;; user details for html exports / mails / etc
+  (setq user-full-name &amp;quot;Shanthakumar&amp;quot;)
+  (setq user-mail-address &amp;quot;mail@shanth.tk&amp;quot;)
+  (setq org-export-with-email t)
+
+  ;; I don&#39;t have lot of screen space for menus
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+
+  ; Don&#39;t wander the cursor
+  (scroll-lock-mode t)
+
+
+  ;; 175% baterry full ??
+  (display-battery-mode 1)
+  (setq battery-mode-line-format &amp;quot;%p&amp;quot;)
+
+  ;; hey where is my clock ?
+  (setq display-time-format &amp;quot; %H:%M %b %d %a &amp;quot;)
+  (display-time-mode 1)
+
+  ;; oh my eyes!!
+  (use-package solarized                
+    :ensure solarized-theme
+  ;  :disabled t
+    :config
+    (load-theme &#39;solarized-dark &#39;no-confirm))
+
+  (use-package zenburn                   
+    :ensure zenburn-theme
+    :disabled t
+    :defer t
+    :init (load-theme &#39;zenburn &#39;no-confirm))
+
+  (set-face-attribute &#39;default nil :font &amp;quot;inconsolata&amp;quot; :height 170 )
+  (set-frame-font  &amp;quot;inconsolata&amp;quot; nil t)
+
+; make mode-line look ❤ ️cool ❤️
+  (use-package powerline
+    :ensure t
+    :config (powerline-center-theme))
+
+; compact mode-line
+(use-package smart-mode-line
+  :ensure t
+  :defer t)
+
+  ; Highlight the current line
+  (use-package hl-line                    
+    :init (global-hl-line-mode 1))
+
+  ; match parens
+  (show-paren-mode t)
+
+  ; Highlight delimiters by depth
+  (use-package rainbow-delimiters         
+    :ensure t
+    :defer t
+    :init (dolist (hook &#39;(text-mode-hook prog-mode-hook))
+            (add-hook hook #&#39;rainbow-delimiters-mode)))
+
+  ;; classy green
+  (set-cursor-color &amp;quot;#00ff00&amp;quot;)
+
+  ;; pretty gracile
+  (setq default-cursor-type &#39;(hbar . 1))
+
+  ;; Stop winking!
+  (blink-cursor-mode 0)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;behaviour&#34;&gt;Behaviour&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;   ;; beep beep... just shut the eff up!
+  (setq visible-bell 1)
+
+  ;; use space for tabs
+  (setq-default indent-tabs-mode nil)
+
+  ;; automatically wrap text to fill-column size
+  (auto-fill-mode 1)
+
+  ;; set column width for org ascii export
+  (setq org-ascii-text-width 60)
+
+  ; single stroke please ♉
+  (fset &#39;yes-or-no-p &#39;y-or-n-p)
+
+  ;; Enable focus‼️ I ain&#39;t a newbie anymore :P
+  (put &#39;narrow-to-region &#39;disabled nil)
+
+  ; Fontify number literals
+  (use-package highlight-numbers          
+    :ensure t
+    :defer t
+    :init (add-hook &#39;prog-mode-hook #&#39;highlight-numbers-mode))
+
+  ; Fontify color values in code
+  (use-package rainbow-mode               
+    :ensure t
+    :bind ((&amp;quot;C-c t r&amp;quot; . rainbow-mode))
+    :config (add-hook &#39;css-mode-hook #&#39;rainbow-mode))
+
+  ; Highlight sexps
+  (use-package highlight-sexp
+    :ensure t
+    :diminish &amp;quot;&amp;quot;
+    :init (setq hl-sexp-background-color &amp;quot;#00171d&amp;quot;)
+    :config (dolist (hook &#39;(clojure-mode-hook
+                             lisp-mode-hook
+                             emacs-lisp-mode-hook
+                             clojurescript-mode-hook))
+                     (add-hook hook #&#39;highlight-sexp-mode)))
+
+; Helm frontend for Flycheck errors
+(use-package helm-flycheck              
+  :ensure t
+  :bind ((&amp;quot;C-c e h&amp;quot; . helm-flycheck)))
+
+; Insert non-breaking spaces on the fly
+(use-package tildify                    
+  :disabled t
+  :bind ((&amp;quot;C-c x t&amp;quot; . tildify-region))
+  :init (dolist (hook &#39;(markdown-mode-hook
+                        latex-mode-hook
+                        rst-mode-hook))
+          (add-hook hook #&#39;tildify-mode))
+  ;; Use the right space for LaTeX
+  :config (add-hook &#39;latex-mode-hook
+                    (lambda () (setq-local tildify-space-string &amp;quot;~&amp;quot;))))
+
+;; No-nonsense way of selection ☕
+(use-package expand-region
+  :ensure expand-region
+  :defer t
+  :bind (&amp;quot;C-=&amp;quot; . er/expand-region))
+
+(use-package multi-term
+  :ensure t
+  :defer t
+  :bind ((&amp;quot;C-x t&amp;quot; . multi-term))
+  :init
+  (setq multi-term-program-switches &amp;quot;--login&amp;quot;)
+  (add-hook &#39;term-mode-hook (lambda()
+                              (yas-minor-mode -1))))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;autocomplete&#34;&gt;Autocomplete&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt; ;; autocomplete-fu
+(require `ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+
+(use-package yasnippet                
+  :ensure t
+  :defer t
+  :init (yas-global-mode)
+  :diminish (yas-minor-mode . &amp;quot; Ⓨ&amp;quot;))
+
+;; start emacs with a terminal
+(multi-term)
+
+(use-package company                  
+  :ensure t
+  :init (global-company-mode)
+  :config (setq company-tooltip-align-annotations t
+                company-tooltip-flip-when-above t
+                ;; Easy navigation to candidates with M-&amp;lt;n&amp;gt;
+                company-show-numbers t)
+  :diminish company-mode)
+
+; Show help in tooltip
+(use-package company-quickhelp        
+  :ensure t
+  :defer t
+  :init (with-eval-after-load &#39;company
+          (company-quickhelp-mode)))
+
+; Sort company candidates by statistics
+(use-package company-statistics    
+  :ensure t
+  :defer t
+  :init (with-eval-after-load &#39;company
+          (company-statistics-mode)))
+
+; Completion for Math symbols
+(use-package company-math            
+  :ensure t
+  :defer t
+  :init (with-eval-after-load &#39;company
+          ;; Add backends for math characters
+          (add-to-list &#39;company-backends &#39;company-math-symbols-unicode)
+          (add-to-list &#39;company-backends &#39;company-math-symbols-latex)))
+
+; Emojis completion like Github/Slack
+(use-package company-emoji           
+  :ensure t
+  :defer t
+  :init (with-eval-after-load &#39;company
+          (add-to-list &#39;company-backends &#39;company-emoji)))
+
+; Helm frontend for company
+(use-package helm-company               
+  :ensure t
+  :defer t
+  :init (with-eval-after-load &#39;company
+          ;; Use Company for completion
+          (bind-key [remap completion-at-point] #&#39;helm-company company-mode-map)
+          (bind-key &amp;quot;C-:&amp;quot; #&#39;helm-company company-mode-map)
+          (bind-key &amp;quot;C-:&amp;quot; #&#39;helm-company company-active-map)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;projects&#34;&gt;Projects&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt; (use-package projectile
+  :ensure t
+  :defer t
+  :diminish projectile-mode
+  :config
+  (progn
+    (setq projectile-keymap-prefix (kbd &amp;quot;C-c p&amp;quot;))
+    (setq projectile-completion-system &#39;default)
+    (setq projectile-enable-caching t)
+    (setq projectile-indexing-method &#39;alien)
+    (add-to-list &#39;projectile-globally-ignored-files &amp;quot;node-modules&amp;quot;))
+  :config
+  (projectile-global-mode))
+
+(use-package helm-projectile
+   :defer t :ensure t
+   :ensure helm-projectile)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;irc&#34;&gt;IRC&lt;/h1&gt;
+
+&lt;p&gt;From : &lt;a href=&#34;http://pages.sachachua.com/.emacs.d/Sacha.html#orgheadline157&#34;&gt;Source&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt; (use-package erc
+  :ensure t :defer t
+  :config
+  (setq erc-hide-list &#39;(&amp;quot;PART&amp;quot; &amp;quot;QUIT&amp;quot; &amp;quot;JOIN&amp;quot;))
+  (setq erc-autojoin-channels-alist &#39;((&amp;quot;freenode.net&amp;quot;
+        &amp;quot;#org-mode&amp;quot;
+        &amp;quot;#emacs&amp;quot;
+         &amp;quot;#emacs-beginners&amp;quot;))
+ erc-server &amp;quot;irc.freenode.net&amp;quot;
+ erc-nick &amp;quot;shanthakumar&amp;quot;)
+  (defun erc-cmd-OPME ()
+    &amp;quot;Request chanserv to op me.&amp;quot;
+    (erc-message &amp;quot;PRIVMSG&amp;quot;
+                 (format &amp;quot;chanserv op %s %s&amp;quot;
+                         (erc-default-target)
+                         (erc-current-nick)) nil))
+
+  (defun erc-cmd-DEOPME ()
+    &amp;quot;Deop myself from current channel.&amp;quot;
+    (erc-cmd-DEOP (format &amp;quot;%s&amp;quot; (erc-current-nick))))
+  )
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;spelling-and-syntax-checking&#34;&gt;Spelling and syntax checking&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt; (use-package ispell                    
+  :defer t
+  :config
+  (progn
+    (setq ispell-program-name  (executable-find &amp;quot;aspell&amp;quot;)
+
+          ispell-dictionary &amp;quot;en_US&amp;quot;     ; Default dictionnary
+          ispell-silently-savep t       ; Don&#39;t ask when saving the private dict
+          ;; Increase the height of the choices window to take our header line
+          ;; into account.
+          ispell-choices-win-default-height 5)
+
+    (unless ispell-program-name
+      (warn &amp;quot;No spell checker available.  Install Hunspell or ASpell.&amp;quot;))))
+
+(use-package flyspell                   ; On-the-fly spell checking
+  :bind ((&amp;quot;C-c t s&amp;quot; . flyspell-mode))
+  :init (progn (dolist (hook &#39;(text-mode-hook message-mode-hook))
+                 (add-hook hook &#39;turn-on-flyspell))
+               (add-hook &#39;prog-mode-hook &#39;flyspell-prog-mode))
+  :config
+  (progn
+    (setq flyspell-use-meta-tab nil
+          ;; Make Flyspell less chatty
+          flyspell-issue-welcome-flag nil
+          flyspell-issue-message-flag nil)
+
+    ;; Free C-M-i for completion
+    (define-key flyspell-mode-map &amp;quot;\M-\t&amp;quot; nil)
+    ;; Undefine mouse buttons which get in the way
+    (define-key flyspell-mouse-map [down-mouse-2] nil)
+    (define-key flyspell-mouse-map [mouse-2] nil))
+  :diminish (flyspell-mode . &amp;quot; ⓢ&amp;quot;))
+
+(use-package flycheck                   ; On-the-fly syntax checking
+  :ensure t
+  :bind ((&amp;quot;C-c e l&amp;quot; . list-flycheck-errors)
+         (&amp;quot;C-c e n&amp;quot; . flycheck-next-error)
+         (&amp;quot;C-c e p&amp;quot; . flycheck-previous-error)
+         (&amp;quot;C-c e c&amp;quot; . flycheck-buffer)
+         (&amp;quot;C-c e C&amp;quot; . flycheck-clear)
+         (&amp;quot;C-c e f&amp;quot; . flycheck-first-error)
+         (&amp;quot;C-c e w&amp;quot; . flycheck-copy-errors-as-kill)
+         (&amp;quot;C-c t f&amp;quot; . flycheck-mode))
+  :init (global-flycheck-mode)
+  :config (progn
+            (setq flycheck-standard-error-navigation nil
+                  flycheck-display-errors-function
+                  #&#39;flycheck-display-error-messages-unless-error-list
+                  flycheck-scalastylerc &amp;quot;scalastyle_config.xml&amp;quot;)
+
+            ;; Use italic face for checker name
+            (set-face-attribute &#39;flycheck-error-list-checker-name nil
+                                :inherit &#39;italic))
+  :diminish (flycheck-mode . &amp;quot; Ⓢ&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;batman-jump-to-positions&#34;&gt;Batman Jump to positions&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt; (use-package avy :ensure t)
+(use-package avy-zap
+  :ensure t
+  :bind
+  ((&amp;quot;M-z&amp;quot; . avy-zap-up-to-char-dwim)
+   (&amp;quot;M-Z&amp;quot; . avy-zap-to-char-dwim)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;search&#34;&gt;Search&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt; (use-package engine-mode
+  :ensure t
+  :config
+  (progn
+    (defengine my-blog &amp;quot;https://www.google.ca/search?q=site:shanth.tk+%s&amp;quot; :keybinding &amp;quot;b&amp;quot;)
+    (defengine stack-overflow &amp;quot;http://stackoverflow.com/search?q=%s&amp;quot; :keybinding &amp;quot;s&amp;quot;)
+    (defengine mail &amp;quot;https://mail.google.com/mail/u/0/#search/%s&amp;quot; :keybinding &amp;quot;m&amp;quot;)
+    (defengine google &amp;quot;http://google.com/search?q=%s&amp;quot; :keybinding &amp;quot;g&amp;quot;)
+    (defengine google-eww &amp;quot;http://google.com/search?q=%s&amp;quot; :keybinding &amp;quot;/&amp;quot; :browser &#39;eww-browse-url)
+    (defengine emacswiki &amp;quot;http://google.com/search?q=site:emacswiki.org+%s&amp;quot; :keybinding &amp;quot;e&amp;quot;)
+    (bind-key# &amp;quot;C-c /&amp;quot; &#39;my/engine-mode-hydra/body)
+    (engine-mode)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;key-bindings&#34;&gt;Key Bindings&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt; (use-package switch-window
+  :ensure t
+  :bind ((&amp;quot;C-x o&amp;quot; . switch-window)))
+
+(use-package ace-window
+  :ensure t)
+
+(use-package hydra :ensure t)
+  (defhydra my/window-movement ()
+    (&amp;quot;&amp;lt;left&amp;gt;&amp;quot; windmove-left)
+    (&amp;quot;&amp;lt;right&amp;gt;&amp;quot; windmove-right)
+    (&amp;quot;&amp;lt;down&amp;gt;&amp;quot; windmove-down)
+    (&amp;quot;&amp;lt;up&amp;gt;&amp;quot; windmove-up)
+    (&amp;quot;y&amp;quot; other-window &amp;quot;other&amp;quot;)
+    (&amp;quot;h&amp;quot; switch-window &amp;quot;switch-window&amp;quot;)
+    (&amp;quot;f&amp;quot; find-file &amp;quot;file&amp;quot;)
+    (&amp;quot;F&amp;quot; find-file-other-window &amp;quot;other file&amp;quot;)
+    (&amp;quot;v&amp;quot; (progn (split-window-right) (windmove-right)) &amp;quot;Vertical&amp;quot;)
+    (&amp;quot;o&amp;quot; delete-other-windows :color blue &amp;quot;delete others&amp;quot;)
+    (&amp;quot;a&amp;quot; ace-window)
+    (&amp;quot;s&amp;quot; ace-swap-window &amp;quot;swap&amp;quot;)
+    (&amp;quot;d&amp;quot; delete-window &amp;quot;delete&amp;quot;)
+    (&amp;quot;D&amp;quot; ace-delete-window &amp;quot;ace delete&amp;quot;)
+    (&amp;quot;i&amp;quot; ace-maximize-window &amp;quot;maximize&amp;quot;)
+    (&amp;quot;b&amp;quot; helm-buffers-list &amp;quot;buffers&amp;quot;)
+    (&amp;quot;q&amp;quot; nil))
+  (defhydra join-lines ()
+    (&amp;quot;&amp;lt;up&amp;gt;&amp;quot; join-line)
+    (&amp;quot;&amp;lt;down&amp;gt;&amp;quot; (join-line 1))
+    (&amp;quot;t&amp;quot; join-line)
+    (&amp;quot;n&amp;quot; (join-line 1)))
+  (defhydra my/org (:color blue)
+    &amp;quot;Convenient Org stuff.&amp;quot;
+    (&amp;quot;a&amp;quot; (org-agenda nil &amp;quot;a&amp;quot;) &amp;quot;Agenda&amp;quot;))
+  (defhydra my/key-chord-commands ()
+    &amp;quot;Main&amp;quot;
+    (&amp;quot;k&amp;quot; kill-sexp)
+    (&amp;quot;h&amp;quot; my/org-jump :color blue)
+    (&amp;quot;x&amp;quot; my/org-finish-previous-task-and-clock-in-new-one &amp;quot;Finish and clock in&amp;quot; :color blue)
+    (&amp;quot;i&amp;quot; my/org-quick-clock-in-task &amp;quot;Clock in&amp;quot; :color blue)
+    (&amp;quot;b&amp;quot; helm-buffers-list &amp;quot;buffers&amp;quot; :color blue)
+    (&amp;quot;f&amp;quot; find-file :color blue)
+    (&amp;quot;a&amp;quot; my/org-check-agenda :color blue)
+    (&amp;quot;c&amp;quot; (call-interactively &#39;org-capture) &amp;quot;capture&amp;quot; :color blue)
+    (&amp;quot;t&amp;quot; (org-capture nil &amp;quot;T&amp;quot;) &amp;quot;Capture task&amp;quot;)
+    (&amp;quot;.&amp;quot; repeat &amp;quot;repeat&amp;quot;)
+    (&amp;quot;C-t&amp;quot; transpose-chars)
+    (&amp;quot;o&amp;quot; my/org-off-my-computer :color blue)
+    (&amp;quot;w&amp;quot; my/engine-mode-hydra/body &amp;quot;web&amp;quot; :exit t)
+    (&amp;quot;m&amp;quot; imenu &amp;quot;imenu&amp;quot; :color blue)
+    (&amp;quot;l&amp;quot; org-insert-last-stored-link)
+    (&amp;quot;L&amp;quot; my/org-insert-link)
+    (&amp;quot;+&amp;quot; text-scale-increase)
+    (&amp;quot;-&amp;quot; text-scale-decrease)
+    (&amp;quot;s&amp;quot; sha/format-mail-header)
+    (&amp;quot;r&amp;quot; sha/format-mail-interleave)
+    (&amp;quot;z&amp;quot; undo)
+    (&amp;quot;x&amp;quot; er/expand-region)
+    (&amp;quot;&amp;lt;RET&amp;gt;&amp;quot; nil))
+
+  (defhydra my/engine-mode-hydra (:color blue)
+    &amp;quot;Engine mode&amp;quot;
+    (&amp;quot;b&amp;quot; engine/search-my-blog &amp;quot;blog&amp;quot;)
+    (&amp;quot;s&amp;quot; engine/search-stack-overflow &amp;quot;stackoverflow&amp;quot;)
+    (&amp;quot;m&amp;quot; engine/search-mail &amp;quot;mail&amp;quot;)
+    (&amp;quot;g&amp;quot; engine/search-google &amp;quot;google&amp;quot;)
+    (&amp;quot;/&amp;quot; engine/search-google-eww &amp;quot;google-eww&amp;quot;)    
+    (&amp;quot;e&amp;quot; engine/search-emacswiki &amp;quot;emacswiki&amp;quot;))
+
+(defun my/key-chord-define (keymap keys command)
+  &amp;quot;Define in KEYMAP, a key-chord of two keys in KEYS starting a COMMAND.
+\nKEYS can be a string or a vector of two elements. Currently only elements
+that corresponds to ascii codes in the range 32 to 126 can be used.
+\nCOMMAND can be an interactive function, a string, or nil.
+If COMMAND is nil, the key-chord is removed.
+
+MODIFICATION: Do not define the transposed key chord.
+&amp;quot;
+  (if (/= 2 (length keys))
+      (error &amp;quot;Key-chord keys must have two elements&amp;quot;))
+  ;; Exotic chars in a string are &amp;gt;255 but define-key wants 128..255 for those
+  (let ((key1 (logand 255 (aref keys 0)))
+        (key2 (logand 255 (aref keys 1))))
+    (define-key keymap (vector &#39;key-chord key1 key2) command)))
+
+(use-package key-chord
+  :ensure t
+  :init
+  (progn
+    (fset &#39;key-chord-define &#39;my/key-chord-define)
+    (setq key-chord-one-key-delay 0.16)
+    (key-chord-mode 1)
+    ;; k can be bound too
+    (key-chord-define-global &amp;quot;uu&amp;quot;     &#39;undo)
+    (key-chord-define-global &amp;quot;kk&amp;quot;     &#39;my/org/body)
+    (key-chord-define-global &amp;quot;ww&amp;quot;     &#39;avy-goto-word-1)
+    (key-chord-define-global &amp;quot;yy&amp;quot;    &#39;my/window-movement/body)
+    (key-chord-define-global &amp;quot;jw&amp;quot;     &#39;switch-window)
+    (key-chord-define-global &amp;quot;jl&amp;quot;     &#39;avy-goto-line)
+    (key-chord-define-global &amp;quot;j.&amp;quot;     &#39;join-lines/body)
+    ;(key-chord-define-global &amp;quot;jZ&amp;quot;     &#39;avy-zap-to-char)
+    (key-chord-define-global &amp;quot;ff&amp;quot;     &#39;find-file)
+    (key-chord-define-global &amp;quot;hh&amp;quot;     &#39;my/key-chord-commands/body)
+    (key-chord-define-global &amp;quot;xx&amp;quot;     &#39;er/expand-region)
+    (key-chord-define-global &amp;quot;JJ&amp;quot;     &#39;my/switch-to-previous-buffer)))
+
+;; M-n or M-p to move to symbol under point.
+(use-package smartscan
+  :defer t
+  :ensure t
+  :config (global-smartscan-mode t))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;setup-gnus-for-mails&#34;&gt;Setup gnus for Mails&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt; (custom-set-variables
+ &#39;(send-mail-function (quote smtpmail-send-it))
+ &#39;(smtpmail-smtp-server &amp;quot;mail.pawnmail.com&amp;quot;)
+ &#39;(smtpmail-smtp-service 25))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Write your mail server config to ~/.authinfo (perhaps use authinfo.gpg)
+#+BEGIN_SRC text :tangle ~/.authinfo
+machine mail.pawnmail.com login mail@shanth.tk port imaps
+machine mail.pawnmail.com login mail@shanth.tk port 993&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;## Make your emails look nicer ♥️
+```.elisp (defun sha/format-mail-header ()
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (let ((beg (region-beginning))
+          (end (region-end))
+          (fill-column 60))
+      (goto-char beg)
+      (insert &amp;quot;Hi,\n\n&amp;quot;)
+      (forward-line 0)
+      (insert &amp;quot;---&amp;quot;)
+      (end-of-line)
+      (newline)
+      (fill-individual-paragraphs (point) end)
+      (goto-char (+ 5 beg))
+      (forward-line)
+      (while (&amp;lt;= (point) (+ 3 1 (count-lines beg end) end))
+        (insert &amp;quot;| &amp;quot;)
+        (forward-line))
+      (insert &amp;quot;\\--\n\n&amp;quot;))))
+
+(defun sha/format-mail-interleave ()
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (let ((beg (region-beginning))
+          (end (region-end))
+          (fill-column 60))
+      (goto-char beg)
+      (forward-line 0)
+      (newline)
+      (insert &amp;quot;---&amp;quot;)
+      (newline)
+      (goto-char end)
+      (end-of-line)
+      (newline)
+      (goto-char (+ beg 3 2))
+      (fill-individual-paragraphs (point) end)
+      (while (&amp;lt;= (point) (+ 1 3 1 (count-lines beg end) end))
+        (insert &amp;quot;| &amp;quot;)
+        (forward-line))
+      (insert &amp;quot;\\--\n\n&amp;quot;))))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;task-management&#34;&gt;Task Management&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt; (use-package org
+  :ensure org-plus-contrib
+  :mode ((&amp;quot;\\.org$&amp;quot; . org-mode)
+         (&amp;quot;\\.gpg$&amp;quot; . org-mode))
+  :config (progn
+
+;  encrypt files with my public key
+    (setq epa-file-encrypt-to &#39;(&amp;quot;mail@shanth.tk&amp;quot;))
+
+    (setq org-columns-default-format &amp;quot;%50ITEM(TASK) %11TODO %16DEADLINE %16SCHEDULED %TAGS&amp;quot;)
+
+  ; org-mode key-bindings
+  (global-set-key &amp;quot;\C-cl&amp;quot; &#39;org-store-link)
+  (global-set-key &amp;quot;\C-cc&amp;quot; &#39;org-capture)
+  (global-set-key &amp;quot;\C-ca&amp;quot; &#39;org-agenda)
+  (global-set-key &amp;quot;\C-cb&amp;quot; &#39;org-iswitchb)
+
+  (setq org-log-done t)
+  (setq org-indent-mode t)
+  (setq org-startup-indented t)
+  (setq org-startup-folded &#39;content)
+  (setq org-indent-indentation-per-level 2)
+  (setq org-directory &amp;quot;~/org&amp;quot;)
+  (setq org-export-allow-bind-keywords t)
+
+  (setq org-todo-keywords
+        &#39;((sequence &amp;quot;TODO&amp;quot; &amp;quot;DEFERRED&amp;quot; &amp;quot;IN-PROGRESS&amp;quot; &amp;quot;DONE&amp;quot;)))
+
+  (setq org-todo-keyword-faces
+        (quote ((&amp;quot;DONE&amp;quot; :foreground &amp;quot;medium green&amp;quot; :weight bold)
+                (&amp;quot;DEFERRED&amp;quot; :foreground &amp;quot;medium yellow&amp;quot; :weight bold)
+                (&amp;quot;IN-PROGRESS&amp;quot; :foreground &amp;quot;medium blue&amp;quot; :weight bold)
+                (&amp;quot;TODO&amp;quot; :foreground &amp;quot;red&amp;quot; :weight bold))))
+
+  (setq org-agenda-files (quote (&amp;quot;~/org/non-public/org/&amp;quot;)))))
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;diary-status-updates-todo-org-vocabulary-and-scratch&#34;&gt;Diary, Status Updates, todo.org, Vocabulary and Scratch&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Create &lt;a href=&#34;http://orgmode.org/manual/Template-elements.html#Template-elements&#34;&gt;custom capture&lt;/a&gt; &lt;a href=&#34;https://www.gnu.org/software/emacs/manual/html_node/org/Template-expansion.html#Template-expansion&#34;&gt;templates&lt;/a&gt; to log timely diary and status
+updates.&lt;/li&gt;
+&lt;li&gt;Use =C-c c= or =C-c d= or =C-c t= to input desired logs.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;   (setq org-capture-templates
+      &#39;((&amp;quot;t&amp;quot; &amp;quot;Todo&amp;quot; entry (file+headline &amp;quot;~/org/non-public/org/todo.org&amp;quot; &amp;quot;Tasks&amp;quot;)
+         &amp;quot;# TODO %?\n  %i\n  %a&amp;quot;)
+        (&amp;quot;d&amp;quot; &amp;quot;Diary Entry&amp;quot; entry (file+datetree+prompt &amp;quot;~/org/non-public/org/timelog.org&amp;quot;)
+         &amp;quot;## %U - %^{Activity}%(org-set-tags)\t:DIARY:\n%?&amp;quot;)
+        (&amp;quot;v&amp;quot; &amp;quot;Vocabulary&amp;quot; entry (file+headline &amp;quot;~/org/non-public/org/vocabulary.org&amp;quot; &amp;quot;Vocabulary&amp;quot;)
+         &amp;quot;# %^{Word}\n%?&amp;quot;)
+        (&amp;quot;s&amp;quot; &amp;quot;Scratch&amp;quot; entry (file+headline &amp;quot;~/org/non-public/org/scratch.org&amp;quot; &amp;quot;Scratch&amp;quot;)
+         &amp;quot;# %^{Heading}\n%?&amp;quot;)
+        (&amp;quot;b&amp;quot; &amp;quot;Bookmarks&amp;quot; entry (file+headline &amp;quot;~/org/non-public/org/bookmarks.org&amp;quot; &amp;quot;Bookmarks&amp;quot;)
+         &amp;quot;# %^{Topic}\n%?&amp;quot;)
+        (&amp;quot; &amp;quot; &amp;quot;Capture one-liner Status&amp;quot; entry (file+datetree &amp;quot;~/org/non-public/org/timelog.org&amp;quot;)
+         &amp;quot;## %U - %^{Activity}%(org-set-tags)&amp;quot; :immediate-finish t)
+        (&amp;quot;u&amp;quot; &amp;quot;Capture one-liner Status with link&amp;quot; entry (file+datetree &amp;quot;~/org/non-public/org/timelog.org&amp;quot;)
+         &amp;quot;## %U - %^{Activity} %^L%(org-set-tags)&amp;quot; :immediate-finish t)
+        (&amp;quot;c&amp;quot; &amp;quot;Capture Log&amp;quot; entry (file+datetree &amp;quot;~/org/non-public/org/timelog.org&amp;quot;)
+         &amp;quot;## %U - %^{Activity}%(org-set-tags)\n%?&amp;quot;)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add tags to =~/org/non-public/org/timelog.org=&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-org&#34;&gt;#+TITLE: Timelog
+#+SETUPFILE: ~/.emacs.d/org-templates/blog.org
+#+TAGS: { done(&#39;) now(,) { consider(.) plan(;) try(t) } went(w) { college(g) meetup(m) { chennairb(r) ilugc(i) } }  } { use(u) change(n) } wanna(a) { read(/) write(-) create(c) play(p) } pest(e) find(f) { how(h) why(y) } { abort(u) setup(s) } fix(x) { think(k) realize(v) opinion(o) } fail(l) miff(z)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Initialize a git repo at =~/org/non-public/org= and push it to
+bitbucket or anything that is private.&lt;/li&gt;
+&lt;li&gt;Create symlink to html export of ~/org/non-public/ to make it
+accessible locally at =&lt;a href=&#34;http://localhost/non-public/=&#34;&gt;http://localhost/non-public/=&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;ln -s ~/org/non-public/ ~/org/blog/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;thesaurus&#34;&gt;Thesaurus&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(use-package thesaurus
+  :ensure t
+  :defer t
+  :config
+  ;; get the API key from https://words.bighugelabs.com
+  (thesaurus-set-bhl-api-key-from-file &amp;quot;~/bhl.api&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;screen-casting&#34;&gt;Screen-casting&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(defun sha/screencast (&amp;amp;optional output-file)
+  (let ((output-file
+         (or output-file
+             (concat &amp;quot;/tmp/&amp;quot;
+                     (format &amp;quot;%S&amp;quot; (abs (random)))
+                     &amp;quot;.mp4&amp;quot;))))
+    (message  &amp;quot;screen-cast started&amp;quot;)
+    (start-process &amp;quot;screencasting&amp;quot;
+                   (get-buffer-create &amp;quot;#screencast-buffer#&amp;quot;)
+                   &amp;quot;ffcast&amp;quot;
+                   &amp;quot;rec&amp;quot;
+                   output-file)
+    output-file))
+
+(defun sha/screencast-handler ()
+  (interactive)
+  (if (process-status &amp;quot;screencasting&amp;quot;)
+      (progn
+        (process-send-string &amp;quot;screencasting&amp;quot; &amp;quot;q&amp;quot;)
+        (message &amp;quot;screen-cast stopped&amp;quot;))
+    (sha/screencast)))
+
+(global-set-key (kbd &amp;quot;s--&amp;quot;) &#39;sha/screencast-handler )
+
+(defun sha/gif-encode (input-file &amp;amp;optional scale frames)
+  (setq sha/gif/frames (or frames &amp;quot;15&amp;quot;))
+        (setq sha/gif/scale (or scale &amp;quot;720&amp;quot;))
+        (setq sha/gif/palette &amp;quot;/tmp/palette.png&amp;quot;)
+        (setq sha/gif/filters
+         (concat &amp;quot;fps=&amp;quot; sha/gif/frames
+                 &amp;quot;,scale=&amp;quot; sha/gif/scale
+                 &amp;quot;:-1:flags=lanczos&amp;quot;))
+    (set-process-sentinel
+     (start-process &amp;quot;gifcasting&amp;quot;
+                    (get-buffer-create &amp;quot;#gifcast-buffer#&amp;quot;)
+                    &amp;quot;ffmpeg&amp;quot; &amp;quot;-i&amp;quot; input-file
+                    &amp;quot;-vf&amp;quot; (concat sha/gif/filters &amp;quot;,palettegen&amp;quot;)
+                    &amp;quot;-y&amp;quot; sha/gif/palette)
+     (lambda (process event)
+       (when (= 0 (process-exit-status process))
+         (set-process-sentinel
+          (start-process &amp;quot;gifcasting&amp;quot;
+                         (get-buffer-create &amp;quot;#gifcast-buffer#&amp;quot;)
+                         &amp;quot;ffmpeg&amp;quot; &amp;quot;-i&amp;quot; input-file
+                         &amp;quot;-i&amp;quot; sha/gif/palette
+                         &amp;quot;-lavfi&amp;quot; (concat sha/gif/filters
+                                          &amp;quot;[x]; [x][1:v] paletteuse&amp;quot;)
+                         &amp;quot;-y&amp;quot; (concat input-file &amp;quot;.gif&amp;quot;))
+          (lambda (process event)
+            (when (= 0 (process-exit-status process))
+              (message &amp;quot;gif-casting done&amp;quot;))))))))
+
+(defun sha/screencast-to-gif (&amp;amp;optional scale frames)
+  (interactive)
+  (sha/gif-encode (read-file-name &amp;quot;Enter .mp4 path : &amp;quot; &amp;quot;/tmp/&amp;quot;)
+                  scale frames)
+  (message &amp;quot;Gif-casting started&amp;quot; ))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;presentations&#34;&gt;Presentations&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;; beamer for LaTeX based presentations.
+(require &#39;ox-beamer)
+(use-package ox-reveal :ensure t)
+; download reveal.js https://github.com/hakimel/reveal.js/
+(setq org-reveal-root &amp;quot;/files/reveal.js&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Create dirs to access presentations at &lt;a href=&#34;http://localhost/presentations/&#34;&gt;http://localhost/presentations/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# one for public
+mkdir -p ~/org/blog/presentations/org
+
+# one for private
+mkdir -p ~/org/non-public/presentations/org
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;use-stack-exchange&#34;&gt;Use Stack Exchange&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(use-package sx                         ; StackExchange client for Emacs
+  :ensure t
+  :bind ((&amp;quot;C-x a s a&amp;quot; . sx-ask)
+         (&amp;quot;C-x a s s&amp;quot; . sx-tab-all-questions)
+         (&amp;quot;C-x a s q&amp;quot; . sx-tab-all-questions)
+         (&amp;quot;C-x a s f&amp;quot; . sx-tab-all-questions)
+         (&amp;quot;C-x a s n&amp;quot; . sx-tab-newest)))
+
+(use-package sx-compose                 ; Write questions/answers for Stack Exchange
+  :ensure sx
+  :defer t
+  :config
+  (progn
+    ;; Don&#39;t fill in SX questions/answers, and use visual lines instead.  Plays
+    ;; more nicely with the website.
+    (add-hook &#39;sx-compose-mode-hook #&#39;turn-off-auto-fill)
+    (add-hook &#39;sx-compose-mode-hook #&#39;visual-line-mode)
+
+    ;; Clean up whitespace before sending questions
+    (add-hook &#39;sx-compose-before-send-hook
+              (lambda ()
+                (whitespace-cleanup)
+                t))
+
+    (bind-key &amp;quot;M-q&amp;quot; #&#39;ignore sx-compose-mode-map)))
+
+(use-package sx-question-mode           ; Show Stack
+  :ensure sx
+  :defer t
+  ;; Display questions in the same window
+  :config (setq sx-question-mode-display-buffer-function #&#39;switch-to-buffer))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;use-twitter&#34;&gt;Use Twitter&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;  (require &#39;twittering-mode)
+  (setq twittering-use-master-password t)
+  (setq twittering-cert-file &amp;quot;/etc/ssl/certs/ca-certificates.crt&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;org-mode-code-blocks&#34;&gt;org-mode Code blocks&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;;; enable source code blocks in org files
+ (org-babel-do-load-languages
+   &#39;org-babel-load-languages
+     (quote ((emacs-lisp . t)
+             (dot . t)
+             (ditaa . t)
+             (ruby . t)
+             (clojure . t)
+             (haskell . t)
+             (sh . t)
+             (org . t)
+             (plantuml . t)
+             (latex . t))))
+
+    ;; source code blocks for ruby haskell dot
+    (add-to-list &#39;org-structure-template-alist
+                 &#39;(&amp;quot;r&amp;quot; &amp;quot;#+BEGIN_SRC ruby :results ?value\n```&amp;quot;))
+    (add-to-list &#39;org-structure-template-alist
+                 &#39;(&amp;quot;d&amp;quot; &amp;quot;#+BEGIN_SRC dot :file ?tmp.svg\n```&amp;quot;))
+    (add-to-list &#39;org-structure-template-alist
+                 &#39;(&amp;quot;h&amp;quot; &amp;quot;#+BEGIN_SRC haskell :results ?value\n```&amp;quot;))
+    (add-to-list &#39;org-structure-template-alist
+                 &#39;(&amp;quot;s&amp;quot; &amp;quot;#+BEGIN_SRC sh :results output :exports both\n?```&amp;quot;))
+
+    ; Do not prompt to confirm evaluation - just make sure what you run
+    ; with sh src blocks - Don&#39;t try to demonstrate rm -rf / or a fork
+    ; bomb :(){ :|:&amp;amp; };:
+    (setq org-confirm-babel-evaluate nil)
+
+    ;; display images inline
+    (add-hook &#39;org-babel-after-execute-hook &#39;org-display-inline-images)
+
+    ;; Export headline body as nodes
+    (require &#39;ox-freemind)
+    (custom-set-variables
+    &#39;(org-freemind-section-format (quote node)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;language-tooling&#34;&gt;Language Tooling&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/lunaryorn/.emacs.d/blob/master/init.el&#34;&gt;Source&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;;; clojure cider repl as root
+  (setenv &amp;quot;LEIN_ROOT&amp;quot; &amp;quot;t&amp;quot;)
+  (setq org-babel-clojure-backend &#39;cider)
+
+(use-package clojure-mode
+  :ensure t
+  :mode ((&amp;quot;\\.clj\\&#39;&amp;quot; . clojure-mode)
+         (&amp;quot;\\.edn\\&#39;&amp;quot; . clojure-mode))
+  :init
+  (add-hook &#39;clojure-mode-hook #&#39;yas-minor-mode)         
+  (add-hook &#39;clojure-mode-hook #&#39;linum-mode)             
+  (add-hook &#39;clojure-mode-hook #&#39;subword-mode)           
+  (add-hook &#39;clojure-mode-hook #&#39;smartparens-mode)       
+  (add-hook &#39;clojure-mode-hook #&#39;rainbow-delimiters-mode)
+  (add-hook &#39;clojure-mode-hook #&#39;eldoc-mode))
+;  (add-hook &#39;clojure-mode-hook #&#39;idle-highlight-mode))
+
+(use-package cider
+  :ensure t
+  :defer t
+  :init (add-hook &#39;cider-mode-hook #&#39;clj-refactor-mode)
+  :diminish subword-mode
+  :config
+  (setq nrepl-log-messages t                  
+        cider-repl-display-in-current-window t
+        cider-repl-use-clojure-font-lock t    
+        cider-prompt-save-file-on-load &#39;always-save
+        cider-font-lock-dynamically &#39;(macro core function var)
+        nrepl-hide-special-buffers t            
+        cider-overlays-use-font-lock t)         
+  (cider-repl-toggle-pretty-printing))
+
+(use-package cider-eval-sexp-fu
+  :defer t)
+
+(use-package clj-refactor
+  :defer t
+  :ensure t
+  :diminish clj-refactor-mode
+  :config (cljr-add-keybindings-with-prefix &amp;quot;C-c C-m&amp;quot;))
+
+(use-package smartparens
+  :defer t
+  :ensure t
+  :diminish smartparens-mode
+  :init
+  (setq sp-override-key-bindings
+        &#39;((&amp;quot;C-&amp;lt;right&amp;gt;&amp;quot; . nil)
+          (&amp;quot;C-&amp;lt;left&amp;gt;&amp;quot; . nil)
+          (&amp;quot;C-)&amp;quot; . sp-forward-slurp-sexp)
+          (&amp;quot;M-&amp;lt;backspace&amp;gt;&amp;quot; . nil)
+          (&amp;quot;C-(&amp;quot; . sp-forward-barf-sexp)))
+  :config
+  (use-package smartparens-config)
+  (sp-use-smartparens-bindings)
+  (sp--update-override-key-bindings)
+  :commands (smartparens-mode show-smartparens-mode))
+
+; Graphviz
+(use-package graphviz-dot-mode  
+  :ensure t
+  :defer t
+  :config
+  (setq graphviz-dot-indent-width 4))
+
+(use-package alchemist
+  :ensure t
+  :init (setq alchemist-key-command-prefix (kbd &amp;quot;C-c ,&amp;quot;))
+  :config (progn
+            (require &#39;alchemist)
+            (setenv &amp;quot;LC_ALL&amp;quot; &amp;quot;en_US.UTF-8&amp;quot;)))
+
+;;; Ruby REPL
+(use-package inf-ruby                   
+  :ensure t
+  :defer t
+  :init (add-hook &#39;ruby-mode-hook #&#39;inf-ruby-minor-mode)
+  :config
+  ;; Easily switch to Inf Ruby from compilation modes to Inf Ruby
+  (inf-ruby-switch-setup))
+
+;;; Haskell
+
+;; This Haskell setup needs:
+;;
+;; stack install hasktags haskell-docs hoogle hindent
+;;
+;; Additionally, to be installed from source:
+;;
+;; - https://github.com/chrisdone/ghci-ng
+
+(use-package haskell-mode               ; Haskell editing
+  :ensure t
+  :defer t
+  :config
+  (progn
+    (add-hook &#39;haskell-mode-hook #&#39;subword-mode)           ; Subword navigation
+    (add-hook &#39;haskell-mode-hook #&#39;haskell-decl-scan-mode) ; Scan and navigate
+                                        ; declarations
+    ;; Insert module templates into new buffers
+    (add-hook &#39;haskell-mode-hook #&#39;haskell-auto-insert-module-template)
+
+    ;; Automatically run hasktags
+    (setq haskell-tags-on-save t
+          haskell-process-type &#39;stack-ghci ; Use stack for interaction
+          ;; Suggest adding/removing imports as by GHC warnings and Hoggle/GHCI
+          ;; loaded modules respectively
+          haskell-process-suggest-remove-import-lines t
+          haskell-process-auto-import-loaded-modules t
+          haskell-process-use-presentation-mode t ; Don&#39;t clutter the echo area
+          haskell-process-show-debug-tips nil     ; Disable tips
+          haskell-process-log t                   ; Log debugging information
+          haskell-process-suggest-hoogle-imports t)
+
+;    (when-let (ghci-ng (executable-find &amp;quot;ghci-ng&amp;quot;))
+;      ;; Use GHCI NG from https://github.com/chrisdone/ghci-ng
+;      (setq haskell-process-path-ghci ghci-ng)
+;      (add-to-list &#39;haskell-process-args-cabal-repl
+;                   (concat &amp;quot;--with-ghc=&amp;quot; ghci-ng)))
+
+    (bind-key &amp;quot;C-c m d&amp;quot; #&#39;haskell-describe haskell-mode-map)
+    (bind-key &amp;quot;C-c m i&amp;quot; #&#39;haskell-navigate-imports haskell-mode-map)
+    (bind-key &amp;quot;C-c m f&amp;quot; #&#39;haskell-cabal-visit-file haskell-mode-map)))
+
+(use-package haskell                    ; Haskell tools
+  :ensure haskell-mode
+  :defer t
+  :config
+  (progn
+    (bind-key &amp;quot;C-c m t&amp;quot; #&#39;haskell-mode-show-type-at
+              interactive-haskell-mode-map)
+    (bind-key &amp;quot;C-c m j&amp;quot; #&#39;haskell-mode-goto-loc
+              interactive-haskell-mode-map)
+    (bind-key &amp;quot;C-c m r&amp;quot; #&#39;haskell-mode-find-uses
+              interactive-haskell-mode-map)))
+
+(use-package haskell-interactive-mode   ; Haskell REPL interaction
+  :ensure haskell-mode
+  :disabled t
+  :defer t
+  :config (add-hook &#39;haskell-interactive-mode-hook #&#39;subword-mode))
+
+(use-package stack-mode                 ; Stack IDE
+  :ensure t
+  :defer t
+  :config (add-hook &#39;haskell-mode-hook #&#39;stack-mode))
+
+(use-package hyai                       ; Haskell Indentation as per John Tibell
+  :ensure t
+  :defer t
+  :init (add-hook &#39;haskell-mode-hook #&#39;hyai-mode)
+  :diminish (hyai-mode . &amp;quot; ⓘ&amp;quot;))
+
+(use-package hindent                    ; Automated Haskell indentation
+  :ensure t
+  :defer t
+  :init (add-hook &#39;haskell-mode-hook #&#39;hindent-mode)
+  :diminish (hindent-mode . &amp;quot; Ⓘ&amp;quot;))
+
+(use-package flycheck-haskell           ; Setup Flycheck from Cabal projects
+  :ensure t
+  :defer t
+  :init (add-hook &#39;flycheck-mode-hook #&#39;flycheck-haskell-setup))
+
+(use-package helm-hoogle                ; Helm frontend for Hoogle
+  :ensure t
+  :defer t
+  :init (with-eval-after-load &#39;haskell-mode
+          (bind-key &amp;quot;C-c m h&amp;quot; #&#39;helm-hoogle haskell-mode-map)))
+
+;;; Web languages
+(use-package web-mode                   ; Template editing
+  :ensure t
+  :defer t
+  :mode &amp;quot;/templates?/.#\\.\\(php\\|html\\)\\&#39;&amp;quot;
+  :config
+  (setq web-mode-markup-indent-offset 2))
+
+(use-package js2-mode                   ; Javascript editing
+  :ensure t
+  :mode &amp;quot;\\.js\\&#39;&amp;quot;
+  :config (progn (setq-default js2-basic-offset 2)
+                 (setq js2-global-externs &#39;(&amp;quot;angular&amp;quot;))
+
+                 (add-hook &#39;js2-mode-hook
+                           #&#39;js2-highlight-unused-variables-mode)))
+
+(use-package css-mode                   ; CSS editing
+  :defer t
+  :config
+  (progn
+    ;; Run Prog Mode hooks, because for whatever reason CSS Mode derives from
+    ;; `fundamental-mode&#39;.
+    (add-hook &#39;css-mode-hook (lambda () (run-hooks &#39;prog-mode-hook)))
+
+    ;; Mark css-indent-offset as safe local variable.
+    (put &#39;css-indent-offset &#39;safe-local-variable #&#39;integerp)))
+
+(use-package css-eldoc                  ; Basic Eldoc for CSS
+  :ensure t
+  :commands (turn-on-css-eldoc)
+  :init (add-hook &#39;css-mode-hook #&#39;turn-on-css-eldoc))
+
+;;; Misc programming languages
+(use-package sh-script                  ; Shell scripts
+  :mode (&amp;quot;\\.zsh\\&#39;&amp;quot; . sh-mode)
+  :config
+  ;; Use two spaces in shell scripts.
+  (setq sh-indentation 2                ; The basic indentation
+        sh-basic-offset 2               ; The offset for nested indentation
+        ))
+
+(use-package nxml-mode                  ; XML editing
+  :defer t
+  ;; Complete closing tags, and insert XML declarations into empty files
+  :config (setq nxml-slash-auto-complete-flag t
+                nxml-auto-insert-xml-declaration-flag t))
+
+;;; Databases
+(use-package sql                        ; SQL editing and REPL
+  :bind ((&amp;quot;C-x a q&amp;quot; . sql-connect)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;version-control&#34;&gt;Version control&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;(use-package vc-hooks                   ; Simple version control
+  :defer t
+  :config
+  ;; Always follow symlinks to files in VCS repos
+  (setq vc-follow-symlinks t))
+
+(use-package what-the-commit            ; Insert random commit messages
+  :ensure t
+  :bind ((&amp;quot;C-c i w&amp;quot; . what-the-commit-insert)
+         (&amp;quot;C-c v w&amp;quot; . what-the-commit)))
+
+(use-package diff-hl                    ; Highlight hunks in fringe
+  :ensure t
+  :defer t
+  :init (progn
+          ;; Highlight changes to the current file in the fringe
+          (global-diff-hl-mode)
+          ;; Highlight changed files in the fringe of Dired
+          (add-hook &#39;dired-mode-hook &#39;diff-hl-dired-mode)
+
+          ;; Fall back to the display margin, if the fringe is unavailable
+          (unless (display-graphic-p)
+            (diff-hl-margin-mode))))
+
+(use-package magit                      ; The one and only Git frontend
+  :ensure t
+  :bind ((&amp;quot;C-c v c&amp;quot; . magit-clone)
+         (&amp;quot;C-c v v&amp;quot; . magit-status)
+         (&amp;quot;C-c v g&amp;quot; . magit-blame)
+         (&amp;quot;C-c v l&amp;quot; . magit-log-buffer-file)
+         (&amp;quot;C-c v p&amp;quot; . magit-pull))
+  ;; Aggressively commit to WIP refs on any change
+  :init (progn (magit-wip-after-save-mode)
+               (magit-wip-after-apply-mode)
+               (magit-wip-before-change-mode))
+  :config (progn
+            ;; Shut up, Magit
+            (setq magit-revert-buffers &#39;silent
+                  magit-save-repository-buffers &#39;dontask
+                  magit-push-always-verify nil
+                  magit-refs-show-commit-count &#39;all
+                  ;; This is creepy, Magit
+                  magit-revision-show-gravatars nil
+                  ;; For some reason this doesn&#39;t work :(
+                  ;; magit-completing-read-function
+                  ;; #&#39;helm-completing-read-with-cands-in-buffer
+                  )
+
+            ;; Set Magit&#39;s repo dirs for `magit-status&#39; from Projectile&#39;s known
+            ;; projects.  Initialize the `magit-repository-directories&#39;
+            ;; immediately after Projectile was loaded, and update it every time
+            ;; we switched projects, because the new project might have been
+            ;; unknown before
+            (defun magit-set-repo-dirs-from-projectile ()
+              &amp;quot;Set `magit-repo-dirs&#39; from known Projectile projects.&amp;quot;
+              (let ((project-dirs (bound-and-true-p projectile-known-projects)))
+                ;; Remove trailing slashes from project directories, because
+                ;; Magit adds trailing slashes again, which breaks the
+                ;; presentation in the Magit prompt.
+                (setq magit-repository-directories
+                      (mapcar #&#39;directory-file-name project-dirs))))
+
+            (with-eval-after-load &#39;projectile
+              (magit-set-repo-dirs-from-projectile))
+
+            (add-hook &#39;projectile-switch-project-hook
+                      #&#39;magit-set-repo-dirs-from-projectile))
+  :diminish (magit-wip-after-save-local-mode
+             magit-wip-before-change-mode))
+
+(use-package git-commit                 ; Git commit message mode
+  :ensure t
+  :defer t
+  :config
+  ;; Oh, really?  Come on… I know what I&#39;m doing…
+  (remove-hook &#39;git-commit-finish-query-functions
+               #&#39;git-commit-check-style-conventions))
+
+(use-package gitconfig-mode             ; Git configuration mode
+  :ensure t
+  :defer t)
+
+(use-package gitignore-mode             ; .gitignore mode
+  :ensure t
+  :defer t)
+
+(use-package gitattributes-mode         ; Git attributes mode
+  :ensure t
+  :defer t)
+
+(use-package git-timemachine            ; Go back in Git time
+  :ensure t
+  :bind ((&amp;quot;C-c v t&amp;quot; . git-timemachine)))
+
+;; show commit messages for a change in popup.
+(use-package git-messenger
+  :ensure t :defer t
+  :bind ((&amp;quot;C-x v m&amp;quot; . git-messenger:popup-message)))
+
+;;; Github integration
+(use-package gh                         ; Github API library
+  ;; Don&#39;t ensure it, since it&#39;s only brought in as dependency
+  :ensure nil
+  :defer t
+  ;; Change the default profile.  The profile itself is set up via customize,
+  ;; and includes auth data, to prevent it from storing tokens in Git config
+  :config (setq gh-profile-default-profile &amp;quot;5hanth&amp;quot;))
+
+(use-package magit-gh-pulls             ; Show Github PRs in Magit
+  :ensure t
+  :defer t
+  :init (add-hook &#39;magit-mode-hook #&#39;turn-on-magit-gh-pulls))
+
+(use-package helm-open-github           ; Open Github pages for current repo
+  :ensure t
+  :bind ((&amp;quot;C-c v G i&amp;quot; . helm-open-github-from-issues)
+         (&amp;quot;C-c v G p&amp;quot; . helm-open-github-from-pull-requests)))
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;tangle-prelude-emacs-org-file-to-emacs&#34;&gt;Tangle prelude-emacs.org file to ~/.emacs&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This blog post is written in &lt;a href=&#34;https://en.wikipedia.org/wiki/Literate_programming&#34;&gt;literate programming style&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Files ~/.emacs, org-style.css, options templates and any other code
+used in this post can be &lt;a href=&#34;http://orgmode.org/manual/Extracting-source-code.html&#34;&gt;tangled&lt;/a&gt; to corresponding files in org-mode.&lt;/li&gt;
+&lt;li&gt;Org file for this blog post is available in &lt;a href=&#34;https://raw.githubusercontent.com/5hanth/5hanth.github.io/master/org/prelude-emacs.org&#34;&gt;my github pages repo&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;;; your every .emacs code goes here like this in src blocks
+;; give filename to extract code blocks with :tangle option in src block header
+;; you can use C-c C-v t to tangle this org file and create ~/.emacs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elisp&#34;&gt;  ;; C-c C-c on this block will generate ~/.emacs
+    (org-babel-tangle) ; or C-c C-v t
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I simply edit this blog post and do =C-c C-v t= to make changes to my ~/.emacs file.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;it-will-evolve-over-years&#34;&gt;It Will Evolve Over Years.&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;figlet &amp;quot;Trust Me : )&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Init Emacs</title>
+      <link>http://shanth.xyz/post/init-emacs/</link>
+      <pubDate>Fri, 04 Dec 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://shanth.xyz/post/init-emacs/</guid>
+      <description>&lt;p&gt;Yo! I&amp;rsquo;m the kind of ones who prefer a true editor rather fancy
+IDE&amp;rsquo;s. I have been a VIm user for the past four years. Had tried Emacs
+before; may be a couple of times I guess, apparently gave up for some
+uncanny reasons and I thought it would make me acquire RIS (Recursive
+Injury Syndrome). I always found myself lost in never ending religious
+flame wars which took me no where from my dilemma of choosing one from
+these two editors.&lt;/p&gt;
+
+&lt;p&gt;I started out with VIm first and sub-merged into awesomeness of VIm
+all day which made me not to think of any other editor out of VIm
+realm. But now it is the case that I can&amp;rsquo;t accept myself anymore of me
+ignoring something for this long without investing a considerable
+amount of time and thought into it. It is just that in this context, I
+can neither say Emacs is bad nor VIm is good. Rather I should take
+emacs for dating long enough to that of one I did with VIm; only then
+it would give me a sense of relative comparability; still it would be
+a very subjective opinion.&lt;/p&gt;
+
+&lt;p&gt;I like Lisp dialects and Haskell family. Emacs is the selling point of
+what can be practically possible with Lisp. So I thought if not for
+the editor; I would taste a dialect of Lisp if I start using Emacs.&lt;/p&gt;
+
+&lt;p&gt;PS : Didn&amp;rsquo;t I mention that here whole Chennai is lost in map due to
+water logging caused by historically very heavy rainfall and all
+telecommunication lines are shut down; taking off the entire city
+offline for past 48 hours(still continuing). I was bored being offilne
+and found Emacs to play with is the reason for this writing. oh yeah!
+this monopolistic - politically backed telecos will never let
+decentralized peer-peer communication systems to come in way of their
+business. The day will come when every common man realizes
+Electromagnetic spectrum is not the owning property for specific group
+of monopolistics who play the License Raj game.&lt;/p&gt;
+
+&lt;p&gt;~ cheers..,&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

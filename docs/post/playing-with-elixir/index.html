@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> def Elixir &middot; Shanthakumar </title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.18-DEV" />
+
+
+<link rel="stylesheet" href="http://shanth.xyz/css/vec.css">
+<link rel="stylesheet" href="http://shanth.xyz/css/style.css">
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+<link rel="shortcut icon" href="/favicon.ico">
+
+
+<link href="" rel="alternate" type="application/rss+xml" title="Shanthakumar" />
+
+</head>
+
+<body>
+  <header>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="http://shanth.xyz">~/shanthakumar</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/post">~/blog</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/about">~/meta</a>
+      </li>
+      
+      <li class="pull-right"><a href=""><i class="fa fa-rss"></i></a></li>
+    </ul>
+  </nav>
+</header>
+
+  <div class="content">
+    
+    
+    <section class="post">
+      <h1 class="post-title"><a href="http://shanth.xyz/post/playing-with-elixir/">def Elixir</a></h1>
+      <span class="post-date">May 2, 2015 </span>
+      <div class="post-content">
+        
+
+<h1 id="the-penguins">The Penguins</h1>
+
+<p>Seems like another <em>hot</em> language is trying to catch-up mainstream and
+I&rsquo;m playing with it for a while now. Was checking some functions
+defined in Elixir&rsquo;s standard lib modules. I Just hit on this:</p>
+
+<pre><code class="language-elixir">iex(1)&gt; h Stream.cycle
+
+def cycle(enumerable)    
+
+Creates a stream that cycles through the given enumerable, infinitely.  
+
+Examples
+
+    ┃ iex&gt; stream = Stream.cycle([1,2,3])
+    ┃ iex&gt; Enum.take(stream, 5)
+    ┃ [1,2,3,1,2]
+</code></pre>
+
+<h1 id="not-sure-if-certain-morphisms-were-dumb-or-its-just-me">Not sure if certain morphisms were dumb or its just me</h1>
+
+<p>That reminds me of the moment I first got introduced to <em>cycle</em>
+function in <em>Haskell</em>.</p>
+
+<p>Back then I was like who needs a function that <code>just</code> <em>creates a
+stream that cycles given numbers, infinitely</em>.</p>
+
+<p>Whats so worse&hellip; I even have a function called <em>id</em> in <em>Haskell</em> that
+gets <em>something</em> and gives it back without doing anything.  Why on the
+earth do someone needs such a function ?? For proving laws in Category
+Theory ?? <code>meh</code></p>
+
+<p>For simplistic reasons, examples for these functions are like that
+everywhere which didn&rsquo;t made any sense for me for a long time :D</p>
+
+<h1 id="the-moment-of-awe">The Moment of Awe</h1>
+
+<p>I once wanted to write a function that takes a list of integers and
+returns a list with integers at even indexes doubled in given list.</p>
+
+<p>{C,C++,Java,..(others)} : Write a for loop from 0 to list.length-1 and
+use a if conditional to check if index is even, if so assign doubled
+value to that index. Finally return the list.</p>
+
+<p>{Elixir, Haskell,&hellip;(FPs)} : Cool story bro! But we can&rsquo;t
+mutate. Period.</p>
+
+<p><code>Stream.cycle</code> here to rescue!</p>
+
+<h1 id="higher-order-functions">Higher Order Functions</h1>
+
+<p><code>Functions</code> are <em>first class citizens</em> in Elixir which means they
+deserve the same rights that 1,2,3,. <em>you</em> and <em>me</em> own in <code>Elixir
+Realm</code>.</p>
+
+<p>If 1,2,3.. can fit into a list then a list of <code>Functions</code> is also
+possible.  <code>Functions *ARE* values</code>!</p>
+
+<p>Functions that takes/returns functions are said to be <em>Higher Order
+Functions</em>. <code>Enum.map</code> is one such commonly used <em>HOF</em>.</p>
+
+<pre><code class="language-elixir"> iex&gt; Enum.map([a: 1, b: 2], fn({k, v}) -&gt; {k, -v} end)
+ [a: -1, b: -2]
+</code></pre>
+
+<p><code>Stream.cycle</code> needs an <em>enumerable</em>. A list is a <em>enumerable</em> and
+its elements can be <em>functions</em>.</p>
+
+<p>Now I need two functions in that list to solve the problem. One is
+that under-estimated <code>id</code> function and other is a function that
+doubles the given value.  I can&rsquo;t find a built-in <em>id</em> function in
+<em>Elixir</em>, so lemme create one :</p>
+
+<pre><code class="language-elixir">iex&gt; id = &amp;(&amp;1)
+
+</code></pre>
+
+<pre><code class="language-elixir">iex&gt; id = &amp;(&amp;1)
+#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;
+iex&gt; id.(42)
+42
+iex&gt; id.(id)
+#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;
+iex&gt; id.(id).(42)
+42
+iex&gt; id.(id).(id).(42)
+42
+iex&gt;
+</code></pre>
+
+<p>Yay! it does only one thing and does it well :D</p>
+
+<p>Now the doubling function :</p>
+
+<pre><code class="language-elixir">iex&gt; double = &amp;(&amp;1*2)
+#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;
+iex&gt; double.(42)
+84
+iex&gt;
+</code></pre>
+
+<p>Thus I now have a list of functions :</p>
+
+<pre><code class="language-elixir">iex&gt; [id,double]
+[#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;,
+#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;]
+iex&gt;
+</code></pre>
+
+<p>And what happens when I pass this list to <code>Stream.cycle</code> ?</p>
+
+<pre><code class="language-elixir">iex&gt; Stream.cycle([id,double])                
+#Function&lt;47.29647706/2 in Stream.unfold/2&gt;
+</code></pre>
+
+<p>Seems like Elixir is as lazy as me.. It just gave me a <code>Promise</code>
+that <em>when</em> you need it, it <em>will</em> be available.</p>
+
+<p>How do I tell Elixir that I need <em>x</em> elements from that <em>lazy</em>
+sequence now ?  - A cousin of <em>UNIX</em>&rsquo;s <em>Pipe</em> operator is here ..</p>
+
+<pre><code class="language-elixir">iex&gt; Stream.cycle([id,double]) |&gt; Enum.take 5
+[#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;,
+#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;,
+#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;,
+#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;,
+#Function&lt;6.90072148/1 in :erl_eval.expr/5&gt;]
+iex&gt;
+</code></pre>
+
+<p>Imagine that like [id, double, id, double, id].</p>
+
+<p>Now, there is a function <code>Enum.zip</code> in <em>Elixir</em> that zips two lists
+into a list of <em>Tuples</em>.</p>
+
+<pre><code class="language-elixir">iex&gt; Enum.zip 1..5, 6..10
+[{1, 6}, {2, 7}, {3, 8}, {4, 9}, {5, 10}]
+iex&gt;
+</code></pre>
+
+<p>But what if I can pass values to a binary function and store back the
+result of that function rather than creating <em>Tuples</em> while <em>zipping</em>
+two lists ?</p>
+
+<p>There is a <code>zipWith</code> function in <em>Haskell</em> for this :</p>
+
+<pre><code class="language-haskell">λ zipWith (+) [1..5] [6..10]
+[7,9,11,13,15]
+λ
+</code></pre>
+
+<p>I can&rsquo;t find one in <em>Elixir</em> stdlib and <em>THAT&rsquo;S OKAY!</em></p>
+
+<p>lemme write one..<br />
+To write a <code>zipWith</code>, I need <code>apply/2</code> from
+<code>Kernel</code> <em>module</em>.  Here is what <em>doc</em> says :</p>
+
+<pre><code class="language-elixir">iex&gt; h Kernel.apply
+
+def apply(fun, args)
+
+Invokes the given fun with the array of arguments args.
+
+Inlined by the compiler.
+
+Examples
+
+┃ iex&gt; apply(fn x -&gt; x * 2 end, [2])
+┃ 4
+
+</code></pre>
+
+<p>Function and a list of args :</p>
+
+<pre><code class="language-elixir">iex&gt; apply &amp;+/2, [20,22]
+42
+iex&gt;
+</code></pre>
+
+<p>Now the <code>zipWith</code> :</p>
+
+<pre><code class="language-elixir">iex&gt; zipWith = &amp;(Stream.zip(&amp;2, &amp;3)
+             |&gt; Enum.map fn {a,b} -&gt; apply &amp;1, [a,b] end)
+#Function&lt;18.90072148/3 in :erl_eval.expr/5&gt;
+iex&gt; zipWith.(&amp;+/2, 1..5, 6..10)                                                
+[7, 9, 11, 13, 15]
+iex&gt;   
+</code></pre>
+
+<p><em>Cool!</em></p>
+
+<p>Now, I need one last function that is very similar to <code>id</code>
+function. That&rsquo;s a Identity function specially made for
+functions. <code>($)</code> function in <em>Haskell</em>.</p>
+
+<p>This is how it is used in <em>Haskell</em>:</p>
+
+<pre><code class="language-haskell">λ zipWith ($) (cycle [id,(\n -&gt; n*2)]) [1..10]
+[1,4,3,8,5,12,7,16,9,20]
+λ
+</code></pre>
+
+<p>($) function creates some kind of <em>delay</em> in function application.</p>
+
+<p>lemme write the <code>fap</code> (<code>f</code>unction <code>ap</code>plication) function&hellip;</p>
+
+<pre><code class="language-elixir">iex&gt; fap = &amp;(apply &amp;1, [&amp;2])                                      
+#Function&lt;12.90072148/2 in :erl_eval.expr/5&gt;
+iex&gt; apply fap, [&amp;(&amp;1*2), 42]
+84
+iex&gt;
+</code></pre>
+
+<p>Finally&hellip;.</p>
+
+<pre><code class="language-elixir">iex&gt; zipWith.(fap, (Stream.cycle [id, double]), 1..10)             
+[1, 4, 3, 8, 5, 12, 7, 16, 9, 20]
+iex&gt;
+</code></pre>
+
+<p>Indeed <em>id</em> and <em>cycle</em> are not <em>dumb</em>, It was <em>me</em>!!</p>
+
+      </div>
+    </section>
+    
+    <section class="pagination clearfix">
+      
+      <a class="btn previous " href="http://shanth.xyz/post/survived-a-day-without-internet/"> Survived A Day Without Internet </a> 
+       
+      
+      <a class="btn next " href="http://shanth.xyz/post/go-is-for-lovers/"> Go is for lovers </a> 
+      
+    </section>
+    
+    
+<section id="disqus_thread" class='disqus'></section>
+<script>
+  var disqus_config = function () {
+    this.page.url = "http://shanth.xyz/post/playing-with-elixir/";
+    
+  };
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = '//5hanth.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+  </div>
+  
+  <footer>
+  <div class="footer-info">
+    <p>
+      <a href="mailto:sh4nth@gmail.com?subject="><i class="fa fa-envelope-o"></i> @5hanth </a>
+      {
+        <a href="https://gohugo.io/" title="Hugo :: A fast and modern static website engine">Hugo 0.18-DEV</a>,
+        <a href="https://github.com/IvanChou/yii.im" title="vec">Vec</a>
+      }
+      {<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/" title="CC BY-NC-ND 3.0">CC BY-NC-ND 3.0</a>}
+    </p>
+  </div>
+</footer>
+
+  
+  <script src="http://shanth.xyz/js/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+  
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-40972293-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>

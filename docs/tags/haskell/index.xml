@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shanthakumar</title>
+    <link>http://shanth.xyz/tags/haskell/index.xml</link>
+    <description>Recent content on Shanthakumar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://shanth.xyz/tags/haskell/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Category Of Functions</title>
+      <link>http://shanth.xyz/post/category-of-functions/</link>
+      <pubDate>Sat, 18 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://shanth.xyz/post/category-of-functions/</guid>
+      <description>&lt;p&gt;Monad Class defines basically two functions or interfaces or whatever
+you call it :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-haskell&#34;&gt;class  Monad m  where
+   (&amp;gt;&amp;gt;=)       :: forall a b. m a -&amp;gt; (a -&amp;gt; m b) -&amp;gt; m b
+   return      :: a -&amp;gt; m a
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Apart from &lt;em&gt;bind (&amp;gt;&amp;gt;=)&lt;/em&gt; and &lt;em&gt;identity (return)&lt;/em&gt; functions, it also
+defines &lt;em&gt;(&amp;gt;&amp;gt;)&lt;/em&gt; and the &lt;em&gt;fail&lt;/em&gt; function.&lt;/p&gt;
+
+&lt;p&gt;And to treat The Category of functions as monad, Monad Instance for
+functions as defined in haskell standard library looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-haskell&#34;&gt;instance Monad ((-&amp;gt;) r) where
+    return = const
+    f &amp;gt;&amp;gt;= k = \ r -&amp;gt; k (f r) r
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;(-&amp;gt;)&lt;/em&gt; means Function Type. For functions, &lt;em&gt;identity&lt;/em&gt; function takes a
+&lt;em&gt;value&lt;/em&gt; ( can be a function ) and takes &lt;em&gt;another value&lt;/em&gt; ( Can be a
+function again ) and gives back the &lt;em&gt;former value&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Nothing special. Now the fun part is with the &lt;em&gt;bind (&amp;gt;&amp;gt;=)&lt;/em&gt; function.
+It takes two functions ( Elements of Category (-&amp;gt;) ) and gives a
+function ( Element belonging to the same Category ). So what ?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-haskell&#34;&gt;&amp;gt; ( reverse &amp;gt;&amp;gt;= (==) ) &amp;quot;GoDDoG&amp;quot;
+True
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I just wrote the epic Palindrome Function. That bind can be expanded
+like this :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-haskell&#34;&gt;&amp;gt;   (\xs -&amp;gt; (==) (reverse xs) xs )  &amp;quot;GoDDoG&amp;quot;
+--  (\ r -&amp;gt;   k  (f        r) r  )  &amp;quot;GoDDoG&amp;quot;   
+-- Aries lined up as in (&amp;gt;&amp;gt;=) definition of (-&amp;gt;) Monad Instance
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is so significant in writing point-free code :)&lt;/p&gt;
+
+&lt;p&gt;But with &lt;em&gt;Arrows&lt;/em&gt;, this is not so nice involving some plumbing works
+of uncurrying.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-haskell&#34;&gt;&amp;gt; ( uncurry (==) . ( reverse &amp;amp;&amp;amp;&amp;amp; id ) ) &amp;quot;GoddoG&amp;quot;
+True
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

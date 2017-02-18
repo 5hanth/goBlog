@@ -1,0 +1,33 @@
+baseurl = "http://shanth.xyz"
+title = "Shanthakumar"
+theme = "vec"
+languageCode = "en-us"
+paginate = 15
+publishDir = "docs"
+
+
+# Enable comments by entering your Disqus shortname
+disqusShortname = "5hanth"
+
+# Enable analytics by entering your Google Analytics tracking ID
+googleAnalytics = "UA-40972293-1"
+
+avater = "img/avatar.jpg"
+
+[params]
+  Keywords = "key, shanthakumar, blog"
+  Description = "There are some words to describe your site"
+  Email = "sh4nth@gmail.com"
+
+  Avater = "img/avatar.jpg"
+  SelfIntro = "Just a worm, seek for true, live in shadow, no more..."
+
+  GithubID = "5hanth"
+  TwitterID = "5hanth"
+  FacebookID = "5hanth"
+  LinkedInID = "5hanth"
+  GoogleplusID = "+Shanthakumar"
+
+  [params.menus]
+     blog = {Name = "blog", URL = "/post"}
+     meta = {Name = "meta", URL = "/about"}

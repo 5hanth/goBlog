@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shanthakumar</title>
+    <link>http://shanth.xyz/tags/hakyll/index.xml</link>
+    <description>Recent content on Shanthakumar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://shanth.xyz/tags/hakyll/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Hello Hakyll</title>
+      <link>http://shanth.xyz/post/hello-hakyll/</link>
+      <pubDate>Fri, 17 Oct 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://shanth.xyz/post/hello-hakyll/</guid>
+      <description>&lt;p&gt;It&amp;rsquo;s been a long time since I blogged. All these days I were doing
+random things whatever that came in my way.  I had been hooking up
+with &lt;a href=&#34;http://haskell.org%20&#34;&gt;Haskell&lt;/a&gt; past few months. I came back to blogging not just to
+track down all my brain vomits, but also to mess up with &lt;a href=&#34;http://jaspervdj.be/hakyll%20&#34;&gt;Hakyll&lt;/a&gt; static
+site generator.&lt;/p&gt;
+
+&lt;p&gt;Hakyll is effin&amp;rsquo; awesome ! It has got a lot of features that makes
+blogging that easy and geeky :D&lt;/p&gt;
+
+&lt;p&gt;Now I can write code illustrations:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-haskell&#34;&gt;main :: IO ()
+main = getLine &amp;gt;&amp;gt;= putStrLn . (++&amp;quot; !&amp;quot;) . (&amp;quot;Hello&amp;quot;++)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Or whatever I still have to explore :) and that too with less
+distress.&lt;/p&gt;
+
+&lt;p&gt;And now I wanna find a hosting and setup with my domain.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Folks say that Dropbox and GDrive offered a way a while back which
+no longer works :(&lt;/li&gt;
+&lt;li&gt;git / gitorious / gitlab / heroku / rhcloud ???&lt;/li&gt;
+&lt;li&gt;Its obvious that using a Version Control System is right choice as
+blogging using a static site generator involves :
+
+&lt;ul&gt;
+&lt;li&gt;Writing Markdown&lt;/li&gt;
+&lt;li&gt;Re-Compiling to Generate Pages&lt;/li&gt;
+&lt;li&gt;Sync with hosting&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;If not a Version Control System, then I may have to do something
+with rsync or csync to update remote pages.&lt;/li&gt;
+&lt;li&gt;But I still hesitate to put all my personal babblings to &lt;a href=&#34;http://github.com/5hanth&#34;&gt;Github&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;*Hmm.. &amp;rsquo;ve to decide yet.. *&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+  <title> {{ .Site.Title }} </title>
+
+  {{ with .Site.Params.keywords }}<meta name="keywords" content="{{.}}">{{ end }}
+  {{ with .Site.Params.description }}<meta name="description" content="{{.}}">{{ end }}
+
+  {{ partial "head.html" . }}
+
+</head>
+
+<body>
+  {{ partial "header.html" . }}
+
+  <section class="user-profile">
+    <figure class="user-avatar">
+      <img class="avatar" alt="shanthakumar" src={{ .Site.Params.avater }}>
+      <figcaption class="user-socials">
+        {{ with .Site.Params.twitterid }}
+        <a href="https://twitter.com/{{.}}" title="Twitter"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+        {{ end }}
+        {{ with .Site.Params.googleplusid }}
+        <a href="https://plus.google.com/{{.}}/about" title="Google+"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
+        {{ end }}
+        {{ with .Site.Params.facebookid }}
+        <a href="https://facebook.com/{{.}}" title="Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+        {{ end }}
+        {{ with .Site.Params.githubid }}
+        <a href="https://github.com/{{.}}" title="GitHub"><i class="fa fa-github-square" aria-hidden="true"></i></a>
+        {{ end }}
+        {{ with .Site.Params.linkedinid }}
+        <a href="http://linkedin.com/in/{{.}}" title="LinkedIn"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+        {{ end }}
+
+      </figcaption>
+    </figure>
+    <p class="user-motivation">{{ .Site.Params.selfintro }}</p>
+  </section>
+  {{ partial "footer.html" . }}
+  {{ partial "analytics.html" . }}
+
+</body>
+</html>

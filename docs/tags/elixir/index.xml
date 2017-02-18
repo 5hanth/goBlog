@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shanthakumar</title>
+    <link>http://shanth.xyz/tags/elixir/index.xml</link>
+    <description>Recent content on Shanthakumar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://shanth.xyz/tags/elixir/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>def Elixir</title>
+      <link>http://shanth.xyz/post/playing-with-elixir/</link>
+      <pubDate>Sat, 02 May 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://shanth.xyz/post/playing-with-elixir/</guid>
+      <description>
+
+&lt;h1 id=&#34;the-penguins&#34;&gt;The Penguins&lt;/h1&gt;
+
+&lt;p&gt;Seems like another &lt;em&gt;hot&lt;/em&gt; language is trying to catch-up mainstream and
+I&amp;rsquo;m playing with it for a while now. Was checking some functions
+defined in Elixir&amp;rsquo;s standard lib modules. I Just hit on this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex(1)&amp;gt; h Stream.cycle
+
+def cycle(enumerable)    
+
+Creates a stream that cycles through the given enumerable, infinitely.  
+
+Examples
+
+    ┃ iex&amp;gt; stream = Stream.cycle([1,2,3])
+    ┃ iex&amp;gt; Enum.take(stream, 5)
+    ┃ [1,2,3,1,2]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;not-sure-if-certain-morphisms-were-dumb-or-its-just-me&#34;&gt;Not sure if certain morphisms were dumb or its just me&lt;/h1&gt;
+
+&lt;p&gt;That reminds me of the moment I first got introduced to &lt;em&gt;cycle&lt;/em&gt;
+function in &lt;em&gt;Haskell&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Back then I was like who needs a function that &lt;code&gt;just&lt;/code&gt; &lt;em&gt;creates a
+stream that cycles given numbers, infinitely&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Whats so worse&amp;hellip; I even have a function called &lt;em&gt;id&lt;/em&gt; in &lt;em&gt;Haskell&lt;/em&gt; that
+gets &lt;em&gt;something&lt;/em&gt; and gives it back without doing anything.  Why on the
+earth do someone needs such a function ?? For proving laws in Category
+Theory ?? &lt;code&gt;meh&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;For simplistic reasons, examples for these functions are like that
+everywhere which didn&amp;rsquo;t made any sense for me for a long time :D&lt;/p&gt;
+
+&lt;h1 id=&#34;the-moment-of-awe&#34;&gt;The Moment of Awe&lt;/h1&gt;
+
+&lt;p&gt;I once wanted to write a function that takes a list of integers and
+returns a list with integers at even indexes doubled in given list.&lt;/p&gt;
+
+&lt;p&gt;{C,C++,Java,..(others)} : Write a for loop from 0 to list.length-1 and
+use a if conditional to check if index is even, if so assign doubled
+value to that index. Finally return the list.&lt;/p&gt;
+
+&lt;p&gt;{Elixir, Haskell,&amp;hellip;(FPs)} : Cool story bro! But we can&amp;rsquo;t
+mutate. Period.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Stream.cycle&lt;/code&gt; here to rescue!&lt;/p&gt;
+
+&lt;h1 id=&#34;higher-order-functions&#34;&gt;Higher Order Functions&lt;/h1&gt;
+
+&lt;p&gt;&lt;code&gt;Functions&lt;/code&gt; are &lt;em&gt;first class citizens&lt;/em&gt; in Elixir which means they
+deserve the same rights that 1,2,3,. &lt;em&gt;you&lt;/em&gt; and &lt;em&gt;me&lt;/em&gt; own in &lt;code&gt;Elixir
+Realm&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If 1,2,3.. can fit into a list then a list of &lt;code&gt;Functions&lt;/code&gt; is also
+possible.  &lt;code&gt;Functions *ARE* values&lt;/code&gt;!&lt;/p&gt;
+
+&lt;p&gt;Functions that takes/returns functions are said to be &lt;em&gt;Higher Order
+Functions&lt;/em&gt;. &lt;code&gt;Enum.map&lt;/code&gt; is one such commonly used &lt;em&gt;HOF&lt;/em&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt; iex&amp;gt; Enum.map([a: 1, b: 2], fn({k, v}) -&amp;gt; {k, -v} end)
+ [a: -1, b: -2]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;Stream.cycle&lt;/code&gt; needs an &lt;em&gt;enumerable&lt;/em&gt;. A list is a &lt;em&gt;enumerable&lt;/em&gt; and
+its elements can be &lt;em&gt;functions&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now I need two functions in that list to solve the problem. One is
+that under-estimated &lt;code&gt;id&lt;/code&gt; function and other is a function that
+doubles the given value.  I can&amp;rsquo;t find a built-in &lt;em&gt;id&lt;/em&gt; function in
+&lt;em&gt;Elixir&lt;/em&gt;, so lemme create one :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; id = &amp;amp;(&amp;amp;1)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; id = &amp;amp;(&amp;amp;1)
+#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;
+iex&amp;gt; id.(42)
+42
+iex&amp;gt; id.(id)
+#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;
+iex&amp;gt; id.(id).(42)
+42
+iex&amp;gt; id.(id).(id).(42)
+42
+iex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Yay! it does only one thing and does it well :D&lt;/p&gt;
+
+&lt;p&gt;Now the doubling function :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; double = &amp;amp;(&amp;amp;1*2)
+#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;
+iex&amp;gt; double.(42)
+84
+iex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Thus I now have a list of functions :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; [id,double]
+[#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;,
+#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;]
+iex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And what happens when I pass this list to &lt;code&gt;Stream.cycle&lt;/code&gt; ?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; Stream.cycle([id,double])                
+#Function&amp;lt;47.29647706/2 in Stream.unfold/2&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Seems like Elixir is as lazy as me.. It just gave me a &lt;code&gt;Promise&lt;/code&gt;
+that &lt;em&gt;when&lt;/em&gt; you need it, it &lt;em&gt;will&lt;/em&gt; be available.&lt;/p&gt;
+
+&lt;p&gt;How do I tell Elixir that I need &lt;em&gt;x&lt;/em&gt; elements from that &lt;em&gt;lazy&lt;/em&gt;
+sequence now ?  - A cousin of &lt;em&gt;UNIX&lt;/em&gt;&amp;rsquo;s &lt;em&gt;Pipe&lt;/em&gt; operator is here ..&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; Stream.cycle([id,double]) |&amp;gt; Enum.take 5
+[#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;,
+#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;,
+#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;,
+#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;,
+#Function&amp;lt;6.90072148/1 in :erl_eval.expr/5&amp;gt;]
+iex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Imagine that like [id, double, id, double, id].&lt;/p&gt;
+
+&lt;p&gt;Now, there is a function &lt;code&gt;Enum.zip&lt;/code&gt; in &lt;em&gt;Elixir&lt;/em&gt; that zips two lists
+into a list of &lt;em&gt;Tuples&lt;/em&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; Enum.zip 1..5, 6..10
+[{1, 6}, {2, 7}, {3, 8}, {4, 9}, {5, 10}]
+iex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But what if I can pass values to a binary function and store back the
+result of that function rather than creating &lt;em&gt;Tuples&lt;/em&gt; while &lt;em&gt;zipping&lt;/em&gt;
+two lists ?&lt;/p&gt;
+
+&lt;p&gt;There is a &lt;code&gt;zipWith&lt;/code&gt; function in &lt;em&gt;Haskell&lt;/em&gt; for this :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-haskell&#34;&gt;λ zipWith (+) [1..5] [6..10]
+[7,9,11,13,15]
+λ
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I can&amp;rsquo;t find one in &lt;em&gt;Elixir&lt;/em&gt; stdlib and &lt;em&gt;THAT&amp;rsquo;S OKAY!&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;lemme write one..&lt;br /&gt;
+To write a &lt;code&gt;zipWith&lt;/code&gt;, I need &lt;code&gt;apply/2&lt;/code&gt; from
+&lt;code&gt;Kernel&lt;/code&gt; &lt;em&gt;module&lt;/em&gt;.  Here is what &lt;em&gt;doc&lt;/em&gt; says :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; h Kernel.apply
+
+def apply(fun, args)
+
+Invokes the given fun with the array of arguments args.
+
+Inlined by the compiler.
+
+Examples
+
+┃ iex&amp;gt; apply(fn x -&amp;gt; x * 2 end, [2])
+┃ 4
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Function and a list of args :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; apply &amp;amp;+/2, [20,22]
+42
+iex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now the &lt;code&gt;zipWith&lt;/code&gt; :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; zipWith = &amp;amp;(Stream.zip(&amp;amp;2, &amp;amp;3)
+             |&amp;gt; Enum.map fn {a,b} -&amp;gt; apply &amp;amp;1, [a,b] end)
+#Function&amp;lt;18.90072148/3 in :erl_eval.expr/5&amp;gt;
+iex&amp;gt; zipWith.(&amp;amp;+/2, 1..5, 6..10)                                                
+[7, 9, 11, 13, 15]
+iex&amp;gt;   
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Cool!&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, I need one last function that is very similar to &lt;code&gt;id&lt;/code&gt;
+function. That&amp;rsquo;s a Identity function specially made for
+functions. &lt;code&gt;($)&lt;/code&gt; function in &lt;em&gt;Haskell&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is how it is used in &lt;em&gt;Haskell&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-haskell&#34;&gt;λ zipWith ($) (cycle [id,(\n -&amp;gt; n*2)]) [1..10]
+[1,4,3,8,5,12,7,16,9,20]
+λ
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;($) function creates some kind of &lt;em&gt;delay&lt;/em&gt; in function application.&lt;/p&gt;
+
+&lt;p&gt;lemme write the &lt;code&gt;fap&lt;/code&gt; (&lt;code&gt;f&lt;/code&gt;unction &lt;code&gt;ap&lt;/code&gt;plication) function&amp;hellip;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; fap = &amp;amp;(apply &amp;amp;1, [&amp;amp;2])                                      
+#Function&amp;lt;12.90072148/2 in :erl_eval.expr/5&amp;gt;
+iex&amp;gt; apply fap, [&amp;amp;(&amp;amp;1*2), 42]
+84
+iex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Finally&amp;hellip;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-elixir&#34;&gt;iex&amp;gt; zipWith.(fap, (Stream.cycle [id, double]), 1..10)             
+[1, 4, 3, 8, 5, 12, 7, 16, 9, 20]
+iex&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Indeed &lt;em&gt;id&lt;/em&gt; and &lt;em&gt;cycle&lt;/em&gt; are not &lt;em&gt;dumb&lt;/em&gt;, It was &lt;em&gt;me&lt;/em&gt;!!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

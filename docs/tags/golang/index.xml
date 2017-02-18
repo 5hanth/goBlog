@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shanthakumar</title>
+    <link>http://shanth.xyz/tags/golang/index.xml</link>
+    <description>Recent content on Shanthakumar</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://shanth.xyz/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>on golang</title>
+      <link>http://shanth.xyz/post/on-golang/</link>
+      <pubDate>Sun, 16 Oct 2016 02:26:49 +0530</pubDate>
+      
+      <guid>http://shanth.xyz/post/on-golang/</guid>
+      <description>
+
+&lt;h1 id=&#34;hey-go&#34;&gt;Hey go!&lt;/h1&gt;
+
+&lt;p&gt;Been a while since I blogged here. When life gives you lemons&amp;hellip; oh wait..&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://shanth.xyz/files/shakthi.jpg&#34; alt=&#34;shakthimaan&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When life gives you dairy milk silk.. just eat it :P&lt;/p&gt;
+
+&lt;h1 id=&#34;golang-new-dating&#34;&gt;Golang : new dating&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Migrated org-mode blog to hugo.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;task-rename-all-org-files-to-md&#34;&gt;Task : Rename all .org files to .md&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import (
+    &amp;quot;path/filepath&amp;quot;
+    &amp;quot;os&amp;quot;
+)
+
+func main() {
+    files, _ := filepath.Glob(&amp;quot;*.org&amp;quot;)
+    for _, file := range files {
+      basename := file[:len(file)-len(filepath.Ext(file))]
+      os.Rename(basename+&amp;quot;.org&amp;quot;, basename+&amp;quot;.md&amp;quot;)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ go run ~/rename.go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;let-s-play-with-apis&#34;&gt;Let&amp;rsquo;s play with APIs&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+
+import (
+	&amp;quot;encoding/json&amp;quot;
+	&amp;quot;fmt&amp;quot;
+	&amp;quot;io/ioutil&amp;quot;
+	&amp;quot;net/http&amp;quot;
+)
+
+type User struct {
+	Id    string
+	Karma int
+	About string
+}
+
+type Item struct {
+	Url   string
+	Title string
+	By    string
+	Score int
+}
+
+type TopStories struct {
+	Items []int
+}
+
+func getApiRaw(url string) []byte {
+	resp, err := http.Get(&amp;quot;https://hacker-news.firebaseio.com/v0&amp;quot; + url + &amp;quot;.json&amp;quot;)
+	if err != nil {
+		fmt.Print(err)
+		return []byte(nil)
+	}
+	defer resp.Body.Close()
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Print(err)
+		return []byte(nil)
+	}
+	return bodyBytes
+}
+
+func getItem(itemId int) Item {
+	item := Item{}
+	itemResp := getApiRaw(&amp;quot;/item/&amp;quot; + fmt.Sprint(itemId))
+	json.Unmarshal(itemResp, &amp;amp;item)
+	return item
+}
+
+func getUser(userId string) User {
+	user := User{}
+	userResp := getApiRaw(&amp;quot;/user/&amp;quot; + userId)
+	json.Unmarshal(userResp, &amp;amp;user)
+	return user
+}
+
+func getTopStories() TopStories {
+	topStories := TopStories{}
+	topStoriesResp := getApiRaw(&amp;quot;/topstories&amp;quot;)
+	json.Unmarshal(topStoriesResp, &amp;amp;topStories.Items)
+	return topStories
+}
+
+func main() {
+	for _, itemId := range getTopStories().Items {
+		item := getItem(itemId)
+		fmt.Println(&amp;quot;[&amp;quot; + fmt.Sprint(item.Score) + &amp;quot;] &amp;quot; + item.Title + &amp;quot; by &amp;quot; + item.By + &amp;quot; (&amp;quot; + fmt.Sprint(getUser(item.By).Karma) + &amp;quot;)&amp;quot;)
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;how-to-do-x-in-go&#34;&gt;How to do X in Go ?&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;RTFM!
+&lt;code&gt;$ godoc -http=:6060&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

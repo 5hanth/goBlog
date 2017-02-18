@@ -1,0 +1,24 @@
+.content {
+  text-align: justify;
+  max-width: 60rem;
+}
+
+.posts .posts-archive ol li {
+  list-style:  none;
+}
+
+.posts .posts-archive ol li::before{
+  content: "\00BB \0020";
+}
+
+.avatar{
+  border-radius: 100%;
+}
+
+.user-socials{
+  padding-top: 1rem;
+}
+
+.center{
+  text-align: center;
+}
